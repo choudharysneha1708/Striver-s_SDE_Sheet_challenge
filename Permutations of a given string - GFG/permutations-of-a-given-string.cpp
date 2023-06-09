@@ -6,19 +6,15 @@ using namespace std;
 class Solution
 {
     private:
-    void find_All_premutation(string S, string currPremutaion, unordered_map<int,bool> &freq,set<string> &permutationOfString){
-        if(currPremutaion.size()==S.size()){
-            permutationOfString.insert(currPremutaion);
+    void find_All_premutation(int index,string S,set<string> &permutationOfString){
+        if(index==S.size()){
+            permutationOfString.insert(S);
             return ;
         }
-        for(int i=0; i<S.size();++i){
-            if(!freq[i]){
-                freq[i]=true;
-                currPremutaion+=S[i];
-                find_All_premutation(S,currPremutaion,freq,permutationOfString);
-                currPremutaion.pop_back();
-                freq[i]=false;
-            }
+        for(int i=index; i<S.size();++i){
+            swap(S[i],S[index]);
+            find_All_premutation(index+1,S,permutationOfString);
+            swap(S[i],S[index]);
         }
     }
     
@@ -38,7 +34,7 @@ class Solution
             string CurPremutation;
             unordered_map<int,bool> m;
              set<string>permutationOfString;
-            find_All_premutation(S,CurPremutation,m,permutationOfString);
+            find_All_premutation(0,S,permutationOfString);
 
             return put(permutationOfString);
 		}
