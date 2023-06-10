@@ -11,16 +11,16 @@
  */
 class Solution {
 public:
-    TreeNode* build(int &index, vector<int>& preorder, int upperBound){
-        if(index==preorder.size() || preorder[index]>upperBound )return NULL;
-        TreeNode* root=new TreeNode(preorder[index++]);
-        root->left=build(index,preorder,root->val);
-        root->right=build(index,preorder,upperBound);
+    TreeNode* buildTree(vector<int>& preorder,int bound, int & index){
+        if(index==preorder.size() || preorder[index]>bound)return NULL;
+        TreeNode* root= new TreeNode(preorder[index++]);
+        root->left=buildTree(preorder,root->val,index);
+        root->right=buildTree(preorder,bound,index);
         return root;
     }
     TreeNode* bstFromPreorder(vector<int>& preorder) {
+        int bound=INT_MAX;
         int index=0;
-        int upperBound=1001;
-        return build(index,preorder,upperBound);
+        return buildTree(preorder,bound,index);
     }
 };
