@@ -9,49 +9,41 @@ using namespace std;
 // User function Template for C++
 
 class Solution {
-  public:
-    int m,n;
+    int n,m;
     int row[4]={1,-1,0,0};
     int col[4]={0,0,1,-1};
-    bool check(int x,int y)
-    {
+  private:
+    bool check(int x, int y){
         if(x<0 || y<0 || x>=n || y>=m)return 0;
         return 1;
     }
-    int shortestPath(vector<vector<int>> &grid, pair<int, int> source,
-                     pair<int, int> t) {
+  public:
+    int shortestPath(vector<vector<int>> &grid, pair<int, int> sou,
+                     pair<int, int> des) {
         // code here
-         n=grid.size();
+        n=grid.size();
         m=grid[0].size();
+        int level=0;
         queue<pair<int,int>>q;
-        int le=0;
-        int x=source.first;
-        int y=source.second;
-        if(grid[x][y]!=1)return -1;
-        q.push({x,y});
-         grid[x][y]=0;
-        while(!q.empty())
-        {
+        q.push({sou.first,sou.second});
+        grid[sou.first][sou.second]=0;
+        while(!q.empty()){
             int sz=q.size();
-            // le++;
-            for(int i=0;i<sz;++i)
-            {
-                int l=q.front().first;
-                int m=q.front().second;
+            for(int i=0;i<sz;++i){
+                int x= q.front().first;
+                int y=q.front().second;
+                if(x==des.first && y==des.second)return level;
                 q.pop();
-                if(l==t.first && m==t.second)return le;
-                for(int k=0;k<4;++k)
-                {
-                    int a=l+row[k];
-                    int b=m+col[k];
-                    if(check(a,b) && grid[a][b]==1)
-                    {
+                for(int k=0;k<4;++k){
+                    int a= row[k]+x;
+                    int b=col[k]+y;
+                    if(check(a,b) && grid[a][b]==1){
                         q.push({a,b});
                         grid[a][b]=0;
                     }
                 }
             }
-            le++;
+            level++;
         }
         return -1;
     }
