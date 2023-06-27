@@ -13,20 +13,21 @@ public:
     bool isSubsetSum(vector<int>arr, int sum){
         // code here 
         int n=arr.size();
-        vector<vector<bool>>Dp(n+1, vector<bool>(sum+1,false));
-        for(int i=0; i<=n;++i){
-            Dp[i][0]=true;
-        }
-        for(int i=1;i<=n; ++i){
-            for(int j=1;  j<=sum; ++j){
-                if(arr[i-1]<=j){
-                    Dp[i][j]=Dp[i-1][j-arr[i-1]]|| Dp[i-1][j];
+        vector<bool>prev(sum+1,false);
+        prev[0]=true;
+        
+        for(int i=0; i<n; ++i){
+            vector<bool>curr(sum+1);
+            for(int j=0; j<=sum; ++j){
+                if(arr[i]<=j){
+                    curr[j]=prev[j-arr[i]]|| prev[j];
                 }else{
-                    Dp[i][j]=Dp[i-1][j];
+                    curr[j]=prev[j];
                 }
             }
+            prev=curr;
         }
-        return Dp[n][sum];
+        return prev[sum];
     }
 };
 
