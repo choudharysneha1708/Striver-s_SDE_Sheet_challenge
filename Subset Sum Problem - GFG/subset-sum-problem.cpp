@@ -9,25 +9,21 @@ using namespace std;
 
 class Solution{   
 public:
-   
     bool isSubsetSum(vector<int>arr, int sum){
+        int n= arr.size();
         // code here 
-        int n=arr.size();
-        vector<bool>prev(sum+1,false);
-        prev[0]=true;
-        
-        for(int i=0; i<n; ++i){
-            vector<bool>curr(sum+1);
-            for(int j=0; j<=sum; ++j){
-                if(arr[i]<=j){
-                    curr[j]=prev[j-arr[i]]|| prev[j];
+        vector<vector<bool>>dp(n+1,vector<bool>(sum+1,0));
+        for(int i=0; i<n; ++i)dp[i][0]=1;
+        for(int i=1; i<=n; ++i){
+            for(int j=1; j<=sum; ++j){
+                if(j>=arr[i-1]){
+                    dp[i][j]=dp[i-1][j-arr[i-1]]||dp[i-1][j];
                 }else{
-                    curr[j]=prev[j];
+                    dp[i][j]=dp[i-1][j];
                 }
             }
-            prev=curr;
         }
-        return prev[sum];
+        return dp[n][sum];
     }
 };
 
