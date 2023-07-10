@@ -9,6 +9,15 @@ using namespace std;
 
 class Solution{
 public:
+    bool check(int index, int target, vector<vector<int>>&dp, int arr[]){
+        if(target==0)return dp[index][target]=  1;
+        if(index==0)return dp[index][target]= (arr[index]==target);
+        if(dp[index][target]!=-1)return dp[index][target];
+        bool take =false;
+        bool nottake=check(index-1, target, dp, arr);
+        if(arr[index-1]<=target)take= check(index-1, target-arr[index-1], dp, arr);
+        return dp[index][target]= (take| nottake);
+    }
     int equalPartition(int N, int arr[])
     {
         int sum=0;
@@ -17,18 +26,8 @@ public:
         }
         if(sum%2)return 0;
         sum/=2;
-        vector<vector<bool>>dp(N+1, vector<bool>(sum+1,0));
-        for(int i=0; i<=N; ++i)dp[i][0]=1;
-        for(int i=1; i<=N; ++i){
-            for(int j=1; j<=sum; ++j){
-                if(j>=arr[i-1]){
-                    dp[i][j]=dp[i-1][j-arr[i-1]]||dp[i-1][j];
-                }else{
-                    dp[i][j]=dp[i-1][j];
-                }
-            }
-        }
-        return dp[N][sum];
+        vector<vector<int>>dp(N, vector<int>(sum+1, -1));
+        return  check(N-1, sum, dp, arr);
     }
 };
 
