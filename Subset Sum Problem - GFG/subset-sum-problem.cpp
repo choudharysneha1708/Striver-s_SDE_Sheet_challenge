@@ -9,22 +9,21 @@ using namespace std;
 
 class Solution{   
 public:
-    bool check(int index, int target,vector<int>&arr, vector<vector<int>>&dp){
-        if(target==0)return dp[index][target]= 1;
-        if(index==0)return dp[index][target]= (target== arr[index]);
-        if(dp[index][target]!=-1)return dp[index][target];
-        bool take=false;
-        bool nottake=check(index-1, target, arr,dp);
-        if(arr[index]<=target){
-            take=check(index-1, target- arr[index], arr, dp);
+    bool isSubsetSum(vector<int>arr, int sum){
+        // code here 
+        int n= arr.size();
+        vector<vector<bool>>dp(n+1, vector<bool>(sum+1, 0));
+        for(int i=0; i<=n;++i)dp[i][0]=1;
+        for(int i=1; i<=n; ++i){
+            for(int j=1; j<=sum; ++j){
+                if(arr[i-1]<=j){
+                    dp[i][j]=dp[i-1][j-arr[i-1]]||dp[i-1][j];
+                }else{
+                    dp[i][j]=dp[i-1][j];
+                }
+            }
         }
-        return dp[index][target]=(take|| nottake);
-    }
-    bool isSubsetSum(vector<int>arr, int target){
-            //as there is 2 state of dp so we need to make 2d dp array to memorize this recursion
-            int n= arr.size();
-            vector<vector<int>>dp(n+1, vector<int>(target+1, -1));
-            return check(n-1, target, arr, dp);
+        return dp[n][sum];
     }
 };
 
