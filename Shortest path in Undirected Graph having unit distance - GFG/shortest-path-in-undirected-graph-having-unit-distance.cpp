@@ -8,35 +8,36 @@ using namespace std;
 // User function Template for C++
 class Solution {
   public:
-    vector<int> shortestPath(vector<vector<int>>& edges, int N,int m, int src){
-        vector<int>dis(N,INT_MAX);
-        vector<bool>vis(N,0);
-        dis[src]=0;
+    vector<int> shortestPath(vector<vector<int>>& edges, int N,int M, int src){
+        vector<int>sortestPathfromSrc(N, INT_MAX);
         vector<vector<int>>adj(N);
-        for(int i=0;i<m;++i){
-            adj[edges[i][0]].push_back(edges[i][1]);
-            adj[edges[i][1]].push_back(edges[i][0]);
+        for(int i=0 ; i<M; ++i){
+            int x = edges[i][0];
+            int y = edges[i][1];
+            adj[x].push_back(y);
+            adj[y].push_back(x);
         }
-        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>>pq;
-        pq.push({0,src});
-        while(!pq.empty()){
-            auto currVer=pq.top().second;
-            auto d=pq.top().first;
-            pq.pop();
-            vis[currVer]=1;
-            for(auto child: adj[currVer]){
-                if(dis[child]>d+1){
-                    dis[child]=d+1;
-                    if(!vis[child]) pq.push({dis[child],child});
+        sortestPathfromSrc[src] = 0;
+        queue<pair<int, int>>q;
+        q.push({src, 0});
+        while(!q.empty()){
+            auto currNode = q.front().first;
+            int dis =q.front().second;
+            q.pop();
+            // if(sortestPathfromSrc[curr])
+            for(int i=0; i<adj[currNode].size(); ++i){
+                if(sortestPathfromSrc[adj[currNode][i]]> dis+1){
+                    sortestPathfromSrc[adj[currNode][i]] = dis + 1;
+                    q.push({adj[currNode][i], dis+1});
                 }
             }
         }
-       for(int i=0;i<N;++i){
-           if(dis[i]==INT_MAX){
-               dis[i]=-1;
-           }
-       }
-        return dis;
+        for(int i=0; i<N; ++i){
+            if(sortestPathfromSrc[i] == INT_MAX){
+                sortestPathfromSrc[i] = -1;
+            }
+        }
+        return sortestPathfromSrc;
     }
 };
 
