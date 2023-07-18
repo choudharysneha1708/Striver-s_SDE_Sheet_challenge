@@ -7,39 +7,41 @@ using namespace std;
 // } Driver Code Ends
 // User function Template for C++
 class Solution {
+  private:
+  vector<int> find(vector<vector<pair<int,int>>>&adj, int src, int N){
+      vector<int>Sortestdis(N, INT_MAX);
+      Sortestdis[src]=0;
+      queue<pair<int, int>>q;
+      q.push({src, 0});
+      while(!q.empty()){
+          int currNode = q.front().first;
+          int distance = q.front().second;
+          q.pop();
+          for(int i=0; i<adj[currNode].size(); ++i){
+              if(Sortestdis[adj[currNode][i].first]>distance +adj[currNode][i].second){
+                  q.push({adj[currNode][i].first, adj[currNode][i].second +distance});
+                  Sortestdis[adj[currNode][i].first] = adj[currNode][i].second + distance;
+              }
+          }
+      }
+      for(int i=0; i<N; ++i){
+            if(Sortestdis[i] == INT_MAX){
+                Sortestdis[i] = -1;
+            }
+      }
+      return Sortestdis;
+  }
   public:
      vector<int> shortestPath(int N,int M, vector<vector<int>>& edges){
+        // code here
         vector<vector<pair<int,int>>>adj(N);
-        vector<int>dis(N,INT_MAX);
-        vector<bool>vis(N,0);
-        dis[0]=0;
-        for(int i=0;i<M;++i){
-            adj[edges[i][0]].push_back({edges[i][1],edges[i][2]});
+        for(int i=0; i<M; ++i){
+            int x = edges[i][0];
+            int y = edges[i][1];
+            int edgeLen = edges[i][2];
+            adj[x].push_back({y,edgeLen});
         }
-        queue<pair<int,int>>pq;
-        pq.push({0,0});
-        while(!pq.empty()){
-            auto currVer = pq.front().second;
-            auto d = pq.front().first;
-            pq.pop();
-            vis[currVer]=1;
-            for(auto child: adj[currVer]){
-                int x=child.first;
-                int l=child.second;
-                if(dis[x]>d+l){
-                    dis[x]=d+l;
-                }
-                if(!vis[x]){
-                    pq.push({dis[x],x});
-                }
-            }
-        }
-        for(int i=0;i<N;++i){
-            if(dis[i]==INT_MAX){
-                dis[i]=-1;
-            }
-        }
-        return dis;
+        return find(adj, 0, N);
     }
 };
 
