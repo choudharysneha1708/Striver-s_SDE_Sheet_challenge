@@ -10,58 +10,34 @@ using namespace std;
 class Solution{
 public:
     int minThrow(int N, int arr[]){
-        map<int, int>snake;
-        map<int, int>ladder;
-        for(int i=0; i<2*N; i+=2){
-            if(arr[i]>arr[i+1]){
-                snake[arr[i]]= arr[i+1];
-            }else{
-                ladder[arr[i]]= arr[i+1];
-            }
-        }
-        queue<int>q;
-        q.push(1);
-
-        int level = 0;
-        vector<bool>vis(31,0);
-        vis[1]=1;
-       
-        int res =INT_MAX;
-        while(!q.empty()){
-            int sz = q.size();
-            for(int i=0; i<sz; ++i){
-                auto currNode = q.front();
-                q.pop();
-                if(currNode == 30) return  level;
-                if(ladder.find(currNode) != ladder.end() && !vis[ladder[currNode]]){
-                       int jump = currNode;
-                        while(ladder.find(jump) != ladder.end()){
-                           jump = ladder[jump];
-                       }
-                       if(!vis[jump]){
-                           q.push(jump);
-                           vis[jump]=1;
-                       }
-                }else if(snake.find(currNode) != snake.end() && !vis[snake[currNode]]){
-                    q.push(snake[currNode]);
-                    vis[snake[currNode]]=1;
-                }
-                else {
-                   for(int j=1; j<=6 && (currNode+j)<=30; ++j){
-                       int jump = currNode+j;
-                       while(ladder.find(jump) != ladder.end()){
-                           jump = ladder[jump];
-                       }
-                       if(!vis[jump]){
-                           q.push(jump);
-                           vis[jump]=1;
-                       }
+       unordered_map<int,int>m;
+       for(int i=0; i<2*N; i+=2){
+           m[arr[i]]= arr[i+1];
+       }
+       queue<int>q;
+       vector<bool>vis(31,0);
+       q.push(1);
+       int level = 0;
+       while(!q.empty()){
+           int size = q.size();
+           while(size--){
+               auto currNode = q.front();
+               if(currNode==30)return level;
+               q.pop();
+               for(int j=1; j<=6; ++j){
+                   int jump = currNode+ j;
+                   while(m.find(jump)!=m.end()){
+                       jump = m[jump];
                    }
-                }
-            }
-            level ++;
-        }
-        return res;
+                   if(!vis[jump]){
+                       q.push(jump);
+                       vis[jump] =1;
+                   }
+               }
+           }
+           level++;
+       }
+       return -1;
     }
 };
 
