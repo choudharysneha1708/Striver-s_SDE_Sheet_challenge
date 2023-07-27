@@ -4,31 +4,28 @@ using namespace std;
 
 // } Driver Code Ends
 class Solution {
-    private:
-    bool dfs(vector<int>adj[], int ver, int par, vector<bool>&vis){
-        vis[ver] = true;
-        bool check = false;
-        for(auto child : adj[ver]){
-            if(!vis[child]){
-                check |= dfs(adj, child, ver, vis);
-            }
-            else if(vis[child] && child!=par)return true;
+  private:
+    bool detect(int ver, vector<int>adj[], vector<bool>vis, int par){
+        vis[ver]=1;
+        for(auto child: adj[ver]){
             
+            if(vis[child] && child!= par)return 1;
+            else if(!vis[child]){
+                if(detect(child, adj,vis, ver))return 1;
+            }
         }
-        return check;
+        return 0;
     }
   public:
     // Function to detect cycle in an undirected graph.
-    
     bool isCycle(int V, vector<int> adj[]) {
-        // Code here
         vector<bool>vis(V, 0);
         for(int i=0; i<V; ++i){
             if(!vis[i]){
-                if(dfs(adj, i, -1, vis))return true;
+                if(detect(i,adj,vis,-1))return 1;
             }
         }
-        return false;
+        return 0;
     }
 };
 
