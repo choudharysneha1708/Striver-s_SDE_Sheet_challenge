@@ -29,21 +29,21 @@ public:
         for(int i=0; i<n; ++i){
             if(leftChild[i]!=-1){
                 count++;
-                int x =i;
-                int y =leftChild[i];
-                change(x,y);
-                // m[{x,y}]++;
-                // if(m[{x,y}]>1)return 0;
+                // int x =i;
+                // int y =leftChild[i];
+                // // change(x,y);
+                // // m[{x,y}]++;
+                // // if(m[{x,y}]>1)return 0;
             }
         }
         for(int i=0; i<n; ++i){
             if(rightChild[i]!=-1){
                 count++;
-                int x =i;
-                int y =rightChild[i];
-                change(x,y);
-                // m[{x,y}]++;
-                // if(m[{x,y}]>1)return 0;
+                // int x =i;
+                // int y =rightChild[i];
+                // // change(x,y);
+                // // m[{x,y}]++;
+                // // if(m[{x,y}]>1)return 0;
             }
         }
         if((count+1)!=n)return 0;
