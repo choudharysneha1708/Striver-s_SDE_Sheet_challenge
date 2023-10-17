@@ -14,45 +14,25 @@ class Solution {
             }
         }
     }
-    private:
-    void change(int &x, int &y){
-        if(x>y){
-           int t=x;
-            x=y;
-            y=t;
-        }
-    }
 public:
     bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
        int count = 0;
-        map<pair<int,int>,int>m;
         for(int i=0; i<n; ++i){
             if(leftChild[i]!=-1){
-                count++;
-                // int x =i;
-                // int y =leftChild[i];
-                // // change(x,y);
-                // // m[{x,y}]++;
-                // // if(m[{x,y}]>1)return 0;
+                count++; 
             }
         }
         for(int i=0; i<n; ++i){
             if(rightChild[i]!=-1){
                 count++;
-                // int x =i;
-                // int y =rightChild[i];
-                // // change(x,y);
-                // // m[{x,y}]++;
-                // // if(m[{x,y}]>1)return 0;
             }
         }
         if((count+1)!=n)return 0;
-        vector<int>res;
         vector<int>in(n,0);
         vector<vector<int>> adj(n);
         fill(adj,in,leftChild, rightChild);
         queue<int>q;
-        int c=0;
+        // int c=0;
         int root =-1;
         for(int i=0;i<n;++i)
         {
@@ -63,16 +43,22 @@ public:
         }
         if(root == -1)return 0;
         q.push(root);
+        unordered_set<int>vis;
+        vis.insert(root);
         while(!q.empty())
         {
             auto node = q.front();
             q.pop();
-            c++;
+            // c++;
             for(auto child: adj[node]){
-                q.push(child);
+                if(vis.find(child)==vis.end())
+                {
+                     q.push(child);
+                     vis.insert(child);
+                }
             }
         }
-        if(c==n)return 1;
+        if(vis.size()==n)return 1;
         // return {};
         return 0;
     }
