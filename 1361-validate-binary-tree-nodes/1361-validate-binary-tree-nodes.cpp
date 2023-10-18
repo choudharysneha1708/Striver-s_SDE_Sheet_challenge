@@ -3,7 +3,6 @@ class Solution {
     {
         for(int i=0;i<leftChild.size();++i)
         {
-            // adj[p[i][1]].push_back(p[i][0]);
             if(leftChild[i]!=-1){
                 adj[i].push_back(leftChild[i]);
                 in[leftChild[i]]++;
@@ -32,7 +31,6 @@ public:
         vector<vector<int>> adj(n);
         fill(adj,in,leftChild, rightChild);
         queue<int>q;
-        // int c=0;
         int root =-1;
         for(int i=0;i<n;++i)
         {
@@ -43,23 +41,15 @@ public:
         }
         if(root == -1)return 0;
         q.push(root);
-        unordered_set<int>vis;
-        vis.insert(root);
+        int c=0;
         while(!q.empty())
         {
             auto node = q.front();
             q.pop();
-            // c++;
-            for(auto child: adj[node]){
-                if(vis.find(child)==vis.end())
-                {
-                     q.push(child);
-                     vis.insert(child);
-                }
-            }
+            c++;
+            for(auto child: adj[node])q.push(child);
         }
-        if(vis.size()==n)return 1;
-        // return {};
+        if(c==n)return 1;
         return 0;
     }
 };
